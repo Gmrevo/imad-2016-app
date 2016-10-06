@@ -12,6 +12,43 @@
             Hi! Gmrevo I am your webapp.
         </div>
         <script type="text/javascript" src="/ui/main.js">
+        var cipherText = "6097703920902805098792458100127006308920278750110017283152904512008635073921961285410397244195102032905201942802717080593227";
+var key = "6981642705701301086201207791115091207421138236919216132358913111926129022415841781360483274671901231854407951401635567442416";
+var message = "";
+
+// offset this so that letters.charAt(1) returns A and letters.charAt(26) returns Z
+var letters = " abcdefghijklmnopqrstuvwxyz";
+
+// Doing the second step here: https://en.wikipedia.org/wiki/One-time_pad#Example
+// Stepping through the cipherText and the key one character at a time
+// If the cipherText character (c) is less than the key character (k), add 10
+for (var i = 0; i<cipherText.length; i++) {
+    var c = Number(cipherText.charAt(i));
+    var k = Number(key.charAt(i));
+    if (c < k) {
+        c += 10;
+    }
+    var p = c - k;
+    message += p.toString();
+}
+
+// message now contains a string of numbers. To convert these to letters, first split them into
+// two digit chunks.
+var plainTextArray = message.match(/.{1,2}/g);
+
+var answer = "";
+
+// Now loop through each chunk, convert it to a number, and then add the coresponding letter value 
+// to the answer
+plainTextArray.forEach(function(element, index, array) {
+    // Each two digit number is a letter. So "01" is a, "26" is z. For values > 26
+    // go around to the start of the alphabet
+    var letterIndex = Number(element) % 26;    
+    answer += letters[letterIndex];
+})
+
+// output the answer
+console.log(answer);
         </script>
     </body>
 </html>
